@@ -7,10 +7,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 import time
 
-# PATH = 'C:\Program Files (x86)\chromedriver.exe'
-# driver = webdriver.Chrome(PATH)
+PATH = 'C:\Program Files (x86)\chromedriver.exe'
+driver = webdriver.Chrome(PATH)
 
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
 
 driver.get("https://www.alcoholicsanonymous.ie/find-meeting/")
 driver.maximize_window()
@@ -31,12 +31,18 @@ except ElementNotInteractableException:
 links = driver.find_elements(By.LINK_TEXT, "Meeting Info")
 time.sleep(5)
 
+meeting_data = {}
 for link in links:
     time.sleep(0.3)
     link.click()
     popup = driver.find_element(By.CLASS_NAME,"lity-opened")
-    right = popup.find_element(By.CLASS_NAME, "item_popup_inner_right")
+    
+    place = popup.find_element(By.CLASS_NAME, "popup_title").text
+    address = popup.find_element(By.CLASS_NAME, "item_address").text
+    times = popup.find_element(By.CLASS_NAME, "item_popup_inner_right").text
     ActionChains(driver).send_keys(Keys.ESCAPE).perform()
     
-    print(right.text, "\n")
+    meeting_data[place] = (address, times)
+    #print(times.text, "\n")
+print(meeting_data)
 
