@@ -22,10 +22,10 @@ def load_all_meetings():
             load.click()
     except ElementNotInteractableException:
         pass
+    time.sleep(5)
 
 def get_meetings():
     links = driver.find_elements(By.LINK_TEXT, "Meeting Info")
-    time.sleep(5)
 
     meeting_data = {}
     for link in links:
@@ -57,7 +57,32 @@ def get_meetings():
         meeting_data[title] = (address, times)
     return meeting_data
 
+
+def set_county():
+    pass
+
+
+
+
 load_all_meetings()
+
+
+
+#set_county()
+county_box = driver.find_element(By.CLASS_NAME, "selectric-countyFilter")
+county_box.click()
+county_drop = driver.find_element(By.CLASS_NAME, "selectric-items")
+county_scroll= county_drop.find_elements(By.CLASS_NAME, "selectric-scroll")
+county_list = county_scroll.find_element(By.TAG_NAME, "ul")
+county_items = county_list.find_elements(By.CLASS_NAME, "county_item")
+
+print(county_items)
+county_items[0].click()
+time.sleep(40)
+
+
+
+
 meeting_data = get_meetings()
 
 for i in meeting_data:
